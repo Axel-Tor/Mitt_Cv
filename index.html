@@ -187,8 +187,14 @@
   .edu-cell{
     padding:20px 18px;
     border-left:1px solid var(--ink);
+    cursor:pointer;
+    transition: background .25s ease;
   }
   .edu-cell:first-child{ border-left:none; }
+  .edu-cell:hover, .edu-cell:focus-visible{
+    background: rgba(43,69,112,0.04);
+    outline:none;
+  }
   .edu-cell .period{
     font-family:'JetBrains Mono', monospace;
     font-size:0.76rem;
@@ -201,19 +207,43 @@
     text-transform:uppercase;
     color:var(--blue);
     margin-top:8px;
-    display:block;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .edu-cell .tag::after{
+    content:'· hover';
+    color:var(--tick);
+    font-size:0.65rem;
+    text-transform:none;
+    letter-spacing:0;
+    transition:opacity .2s ease;
+  }
+  .edu-cell:hover .tag::after, .edu-cell:focus-visible .tag::after{
+    opacity:0;
   }
   .edu-cell h3{
     font-family:'Space Grotesk', sans-serif;
-    font-size:0.98rem;
+    font-size:0.86rem;
     font-weight:600;
-    margin-top:8px;
-    line-height:1.35;
+    line-height:1.4;
+    max-height:0;
+    opacity:0;
+    margin-top:0;
+    overflow:hidden;
+    transition: max-height .35s ease, opacity .3s ease .05s, margin-top .35s ease;
+  }
+  .edu-cell:hover h3, .edu-cell:focus-visible h3{
+    max-height:140px;
+    opacity:1;
+    margin-top:10px;
   }
   @media (max-width:640px){
     .edu-grid{ grid-template-columns:1fr; }
-    .edu-cell{ border-left:none; border-top:1px solid var(--ink); }
+    .edu-cell{ border-left:none; border-top:1px solid var(--ink); cursor:default; }
     .edu-cell:first-child{ border-top:none; }
+    .edu-cell .tag::after{ content:''; }
+    .edu-cell h3{ max-height:140px; opacity:1; margin-top:10px; }
   }
 
   /* --- competencies --- */
@@ -283,9 +313,60 @@
 
   .bottom-space{ height:50px; }
 
+  /* --- scroll reveal --- */
+  .reveal-section{
+    opacity:0;
+    transform: translateY(28px);
+    transition: opacity .7s cubic-bezier(.16,.8,.3,1), transform .7s cubic-bezier(.16,.8,.3,1);
+  }
+  .reveal-section.is-visible{
+    opacity:1;
+    transform:none;
+  }
+
+  .section-head .rule{
+    transform-origin:left;
+    transform:scaleX(0);
+    transition: transform .9s cubic-bezier(.16,.8,.3,1) .15s;
+  }
+  .reveal-section.is-visible .section-head .rule{
+    transform:scaleX(1);
+  }
+
+  .timeline .t-item, .edu-grid .edu-cell, .tags .tag-chip{
+    opacity:0;
+    transform:translateY(14px);
+    transition: opacity .55s ease, transform .55s ease;
+  }
+  .reveal-section.is-visible .timeline .t-item,
+  .reveal-section.is-visible .edu-grid .edu-cell,
+  .reveal-section.is-visible .tags .tag-chip{
+    opacity:1;
+    transform:none;
+  }
+  .timeline .t-item:nth-child(1){ transition-delay:.05s; }
+  .timeline .t-item:nth-child(2){ transition-delay:.12s; }
+  .timeline .t-item:nth-child(3){ transition-delay:.19s; }
+  .timeline .t-item:nth-child(4){ transition-delay:.26s; }
+  .timeline .t-item:nth-child(5){ transition-delay:.33s; }
+  .timeline .t-item:nth-child(6){ transition-delay:.40s; }
+  .edu-grid .edu-cell:nth-child(1){ transition-delay:.08s; }
+  .edu-grid .edu-cell:nth-child(2){ transition-delay:.18s; }
+  .edu-grid .edu-cell:nth-child(3){ transition-delay:.28s; }
+  .tags .tag-chip:nth-child(1){ transition-delay:.05s; }
+  .tags .tag-chip:nth-child(2){ transition-delay:.10s; }
+  .tags .tag-chip:nth-child(3){ transition-delay:.15s; }
+  .tags .tag-chip:nth-child(4){ transition-delay:.20s; }
+  .tags .tag-chip:nth-child(5){ transition-delay:.25s; }
+
   @media (prefers-reduced-motion: reduce){
     header.title-strip{ animation:none; opacity:1; }
     html{ scroll-behavior:auto; }
+    .reveal-section, .section-head .rule, .timeline .t-item, .edu-grid .edu-cell, .tags .tag-chip{
+      opacity:1 !important;
+      transform:none !important;
+      transition:none !important;
+    }
   }
 
   a:focus-visible, .t-item:focus-visible{
@@ -312,7 +393,7 @@
     </div>
   </header>
 
-  <section aria-labelledby="exp-h">
+  <section class="reveal-section" aria-labelledby="exp-h">
     <div class="section-head">
       <span class="num">01</span>
       <h2 id="exp-h">Arbetslivserfarenhet</h2>
@@ -321,7 +402,15 @@
 
     <div class="timeline">
       <div class="t-item">
-        <div class="t-date">V. 24—27 2025</div>
+        <div class="t-date">JUN—JUL 2026</div>
+        <div class="t-mark"><span></span></div>
+        <div class="t-role">
+          <h3>Fastighetsskötare, Bofast</h3>
+          <p>Löpande skötsel och underhåll av fastigheter.</p>
+        </div>
+      </div>
+      <div class="t-item">
+        <div class="t-date">JUN—JUL 2025</div>
         <div class="t-mark"><span></span></div>
         <div class="t-role">
           <h3>Fastighetsskötare, Bofast</h3>
@@ -363,7 +452,7 @@
     </div>
   </section>
 
-  <section aria-labelledby="edu-h">
+  <section class="reveal-section" aria-labelledby="edu-h">
     <div class="section-head">
       <span class="num">02</span>
       <h2 id="edu-h">Utbildning</h2>
@@ -371,17 +460,17 @@
     </div>
 
     <div class="edu-grid">
-      <div class="edu-cell">
+      <div class="edu-cell" tabindex="0">
         <div class="period">2025—2026</div>
         <span class="tag">Pågående</span>
         <h3>Högskoleingenjör, Samhällsbyggnadsteknik — Chalmers</h3>
       </div>
-      <div class="edu-cell">
+      <div class="edu-cell" tabindex="0">
         <div class="period">2024—2025</div>
         <span class="tag">Militärutbildning</span>
         <h3>Värnplikt, Trafikgruppchef — T2, Skövde</h3>
       </div>
-      <div class="edu-cell">
+      <div class="edu-cell" tabindex="0">
         <div class="period">2021—2024</div>
         <span class="tag">Gymnasium</span>
         <h3>Teknikprogrammet, Kattegattgymnasiet — Studenten 2024, 19.8 meritpoäng</h3>
@@ -389,7 +478,7 @@
     </div>
   </section>
 
-  <section aria-labelledby="comp-h">
+  <section class="reveal-section" aria-labelledby="comp-h">
     <div class="section-head">
       <span class="num">03</span>
       <h2 id="comp-h">Kompetenser &amp; om mig</h2>
@@ -416,7 +505,7 @@
     </div>
   </section>
 
-  <footer>
+  <footer class="reveal-section">
     <div class="stamp">
       <div><div class="k">Namn</div><div class="v">Axel Torhall</div></div>
       <div><div class="k">Dokument</div><div class="v">Curriculum Vitae</div></div>
@@ -427,6 +516,29 @@
 
   <div class="bottom-space"></div>
 </div>
+
+<script>
+  (function(){
+    var sections = document.querySelectorAll('.reveal-section');
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (reduceMotion || !('IntersectionObserver' in window)) {
+      sections.forEach(function(s){ s.classList.add('is-visible'); });
+      return;
+    }
+
+    var observer = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+
+    sections.forEach(function(s){ observer.observe(s); });
+  })();
+</script>
 
 </body>
 </html>
