@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Axel Torhall — CV</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root{
+    --paper: #FAFAF6;
+    --paper-line: #E3E1D9;
+    --ink: #1C2321;
+    --ink-soft: #55605C;
+    --blue: #2B4570;
+    --blue-soft: #5A7398;
+    --rust: #B5540C;
+    --tick: #C7C4B8;
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+
+  html{ scroll-behavior:smooth; }
+
+  body{
+    background: var(--paper);
+    color: var(--ink);
+    font-family:'Inter', sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .sheet{
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 40px 0;
+    position:relative;
+  }
+
+  /* top ruler — a strip of tick marks, like the edge of a drawing sheet */
+  .ruler{
+    height:22px;
+    max-width:900px;
+    margin:0 auto;
+    display:flex;
+    align-items:flex-end;
+    padding:0 40px;
+    background-image: repeating-linear-gradient(to right, var(--tick) 0, var(--tick) 1px, transparent 1px, transparent 24px);
+    background-position: 40px 0;
+  }
+  @media (max-width:640px){
+    .ruler{ background-position:20px 0; padding:0 20px; }
+  }
+
+  header.title-strip{
+    padding: 44px 0 32px;
+    border-bottom: 1.5px solid var(--ink);
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    flex-wrap:wrap;
+    gap:20px;
+    opacity:0;
+    animation: rise .6s ease forwards;
+  }
+
+  @keyframes rise{
+    from{ opacity:0; transform:translateY(10px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+
+  .name-block h1{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700;
+    font-size:clamp(2.1rem, 5vw, 3.1rem);
+    letter-spacing:-0.02em;
+    line-height:1;
+  }
+
+  .name-block .role{
+    margin-top:10px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.82rem;
+    letter-spacing:0.04em;
+    color:var(--blue);
+    text-transform:uppercase;
+  }
+
+  .contact-block{
+    text-align:right;
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.82rem;
+    color:var(--ink-soft);
+    line-height:1.7;
+  }
+  .contact-block a{ color:var(--ink-soft); text-decoration:none; border-bottom:1px solid var(--paper-line); }
+  .contact-block a:hover, .contact-block a:focus-visible{ color:var(--blue); border-color:var(--blue); }
+  @media (max-width:640px){ .contact-block{ text-align:left; } }
+
+  section{
+    padding: 46px 0 10px;
+  }
+
+  .section-head{
+    display:flex;
+    align-items:baseline;
+    gap:14px;
+    margin-bottom: 28px;
+  }
+
+  .section-head .num{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.85rem;
+    color:var(--rust);
+    border:1px solid var(--rust);
+    padding:2px 7px;
+    border-radius:2px;
+  }
+
+  .section-head h2{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size:1.15rem;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+  }
+
+  .section-head .rule{
+    flex:1;
+    height:1px;
+    background: var(--paper-line);
+  }
+
+  /* --- experience: dimension-line timeline --- */
+  .timeline{
+    display:flex;
+    flex-direction:column;
+  }
+
+  .t-item{
+    display:grid;
+    grid-template-columns: 150px 20px 1fr;
+    align-items:start;
+    padding: 18px 0;
+    border-top: 1px dashed var(--paper-line);
+    transition: background .2s ease;
+  }
+  .t-item:first-child{ border-top:none; }
+  .t-item:hover{ background: rgba(43,69,112,0.03); }
+
+  .t-date{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.78rem;
+    color:var(--ink-soft);
+    padding-top:3px;
+  }
+
+  .t-mark{
+    display:flex; justify-content:center;
+  }
+  .t-mark span{
+    width:8px; height:8px;
+    border-radius:50%;
+    background:var(--blue);
+    margin-top:6px;
+  }
+
+  .t-role h3{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size:1rem;
+    color:var(--ink);
+  }
+  .t-role p{
+    font-size:0.92rem;
+    color:var(--ink-soft);
+    margin-top:2px;
+  }
+
+  /* --- education: title-block style panels --- */
+  .edu-grid{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap:0;
+    border:1px solid var(--ink);
+  }
+  .edu-cell{
+    padding:20px 18px;
+    border-left:1px solid var(--ink);
+  }
+  .edu-cell:first-child{ border-left:none; }
+  .edu-cell .period{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.76rem;
+    color:var(--ink-soft);
+  }
+  .edu-cell .tag{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.72rem;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    color:var(--blue);
+    margin-top:8px;
+    display:block;
+  }
+  .edu-cell h3{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:0.98rem;
+    font-weight:600;
+    margin-top:8px;
+    line-height:1.35;
+  }
+  @media (max-width:640px){
+    .edu-grid{ grid-template-columns:1fr; }
+    .edu-cell{ border-left:none; border-top:1px solid var(--ink); }
+    .edu-cell:first-child{ border-top:none; }
+  }
+
+  /* --- competencies --- */
+  .tags{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-bottom:22px;
+  }
+  .tag-chip{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.8rem;
+    padding:6px 12px;
+    border:1px solid var(--ink);
+    border-radius:2px;
+    color:var(--ink);
+  }
+
+  .about-text{
+    font-size:0.98rem;
+    color:var(--ink-soft);
+    max-width:66ch;
+    line-height:1.7;
+  }
+  .about-text strong{ color:var(--ink); font-weight:600; }
+
+  .facts{
+    margin-top:24px;
+    display:grid;
+    grid-template-columns:repeat(2, auto);
+    gap: 10px 40px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.8rem;
+    color:var(--ink-soft);
+  }
+  .facts div b{ color:var(--ink); display:block; font-size:0.75rem; text-transform:uppercase; letter-spacing:.04em; margin-bottom:3px; }
+  @media (max-width:640px){ .facts{ grid-template-columns:1fr 1fr; } }
+
+  /* --- title block footer, mirrors an engineering drawing stamp --- */
+  footer{
+    margin-top:60px;
+    border-top:1.5px solid var(--ink);
+  }
+  .stamp{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    text-align:left;
+  }
+  .stamp div{
+    padding:14px 18px;
+    border-left:1px solid var(--ink);
+    font-family:'JetBrains Mono', monospace;
+  }
+  .stamp div:first-child{ border-left:none; }
+  .stamp .k{
+    font-size:0.66rem;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    color:var(--ink-soft);
+    margin-bottom:5px;
+  }
+  .stamp .v{ font-size:0.82rem; color:var(--ink); }
+  @media (max-width:640px){
+    .stamp{ grid-template-columns:1fr 1fr; }
+    .stamp div:nth-child(3){ border-left:none; }
+  }
+
+  .bottom-space{ height:50px; }
+
+  @media (prefers-reduced-motion: reduce){
+    header.title-strip{ animation:none; opacity:1; }
+    html{ scroll-behavior:auto; }
+  }
+
+  a:focus-visible, .t-item:focus-visible{
+    outline:2px solid var(--blue);
+    outline-offset:2px;
+  }
+</style>
+</head>
+<body>
+
+<div class="ruler" aria-hidden="true"></div>
+
+<div class="sheet">
+
+  <header class="title-strip">
+    <div class="name-block">
+      <h1>Axel Torhall</h1>
+      <div class="role">Blivande högskoleingenjör — Samhällsbyggnadsteknik</div>
+    </div>
+    <div class="contact-block">
+      <div>Strandvägen 9, Torup</div>
+      <div>0722&nbsp;11&nbsp;01&nbsp;04</div>
+      <div><a href="mailto:axel.torhall@gmail.com">axel.torhall@gmail.com</a></div>
+    </div>
+  </header>
+
+  <section aria-labelledby="exp-h">
+    <div class="section-head">
+      <span class="num">01</span>
+      <h2 id="exp-h">Arbetslivserfarenhet</h2>
+      <span class="rule"></span>
+    </div>
+
+    <div class="timeline">
+      <div class="t-item">
+        <div class="t-date">V. 24—27 2025</div>
+        <div class="t-mark"><span></span></div>
+        <div class="t-role">
+          <h3>Fastighetsskötare, Bofast</h3>
+          <p>Löpande skötsel och underhåll av fastigheter.</p>
+        </div>
+      </div>
+      <div class="t-item">
+        <div class="t-date">JUN—JUL 2024</div>
+        <div class="t-mark"><span></span></div>
+        <div class="t-role">
+          <h3>Fastighetsskötare, Bofast</h3>
+          <p>Löpande skötsel och underhåll av fastigheter.</p>
+        </div>
+      </div>
+      <div class="t-item">
+        <div class="t-date">JUN—JUL 2023</div>
+        <div class="t-mark"><span></span></div>
+        <div class="t-role">
+          <h3>Kyrkvaktmästare, Torups kyrka</h3>
+          <p>Praktiska och administrativa uppgifter kring kyrkans drift.</p>
+        </div>
+      </div>
+      <div class="t-item">
+        <div class="t-date">JUN—AUG 2022</div>
+        <div class="t-mark"><span></span></div>
+        <div class="t-role">
+          <h3>Badvakt, Halmstad Äventyrsland</h3>
+          <p>Säkerhetsansvar och gästbemötande på ett högfrekventerat badanläggning.</p>
+        </div>
+      </div>
+      <div class="t-item">
+        <div class="t-date">JUN—AUG 2021</div>
+        <div class="t-mark"><span></span></div>
+        <div class="t-role">
+          <h3>Golfbaneskötare, Rydö Golfklubb</h3>
+          <p>Skötsel och underhåll av golfbanan.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="edu-h">
+    <div class="section-head">
+      <span class="num">02</span>
+      <h2 id="edu-h">Utbildning</h2>
+      <span class="rule"></span>
+    </div>
+
+    <div class="edu-grid">
+      <div class="edu-cell">
+        <div class="period">2025—2026</div>
+        <span class="tag">Pågående</span>
+        <h3>Högskoleingenjör, Samhällsbyggnadsteknik — Chalmers</h3>
+      </div>
+      <div class="edu-cell">
+        <div class="period">2024—2025</div>
+        <span class="tag">Militärutbildning</span>
+        <h3>Värnplikt, Trafikgruppchef — T2, Skövde</h3>
+      </div>
+      <div class="edu-cell">
+        <div class="period">2021—2024</div>
+        <span class="tag">Gymnasium</span>
+        <h3>Teknikprogrammet, Kattegattgymnasiet — Studenten 2024, 19.8 meritpoäng</h3>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="comp-h">
+    <div class="section-head">
+      <span class="num">03</span>
+      <h2 id="comp-h">Kompetenser &amp; om mig</h2>
+      <span class="rule"></span>
+    </div>
+
+    <div class="tags">
+      <span class="tag-chip">Kreativ</span>
+      <span class="tag-chip">Håller tiden</span>
+      <span class="tag-chip">Bra på idrott</span>
+      <span class="tag-chip">Stark</span>
+      <span class="tag-chip">Social</span>
+    </div>
+
+    <p class="about-text">
+      Jag tränar <strong>bandy och golf</strong> och håller igång med simning och gymnastik vid sidan om,
+      och är intresserad av <strong>konstruktioner och byggnader</strong> — en stor del av varför jag valt
+      att studera samhällsbyggnadsteknik. På fritiden gymmar jag gärna och umgås med kompisar.
+    </p>
+
+    <div class="facts">
+      <div><b>Språk</b>Svenska, Engelska, Tyska (5 år)</div>
+      <div><b>Körkort</b>B, A2</div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="stamp">
+      <div><div class="k">Namn</div><div class="v">Axel Torhall</div></div>
+      <div><div class="k">Dokument</div><div class="v">Curriculum Vitae</div></div>
+      <div><div class="k">Uppdaterad</div><div class="v">2026</div></div>
+      <div><div class="k">Kontakt</div><div class="v">axel.torhall@gmail.com</div></div>
+    </div>
+  </footer>
+
+  <div class="bottom-space"></div>
+</div>
+
+</body>
+</html>
