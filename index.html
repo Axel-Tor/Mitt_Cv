@@ -193,13 +193,13 @@
     max-height:0; opacity:0; margin-top:0; overflow:hidden;
     transition: max-height .35s ease, opacity .3s ease .05s, margin-top .35s ease;
   }
-  .edu-cell:hover h3, .edu-cell:focus-visible h3{ max-height:140px; opacity:1; margin-top:10px; }
+  .edu-cell:hover h3, .edu-cell:focus-visible h3{ max-height:170px; opacity:1; margin-top:10px; }
   @media (max-width:640px){
     .edu-grid{ grid-template-columns:1fr; }
     .edu-cell{ border-left:none; border-top:1px solid var(--border); cursor:default; }
     .edu-cell:first-child{ border-top:none; }
     .edu-cell .tag::after{ content:''; }
-    .edu-cell h3{ max-height:140px; opacity:1; margin-top:10px; }
+    .edu-cell h3{ max-height:170px; opacity:1; margin-top:10px; }
   }
 
   /* --- projects (purple) --- */
@@ -253,6 +253,7 @@
   .skill-tab:nth-child(3){ --c: var(--purple); }
   .skill-tab:nth-child(4){ --c: var(--amber); }
   .skill-tab:nth-child(5){ --c: var(--green); }
+  .skill-tab:nth-child(6){ --c: var(--blue); }
 
   .skill-panel{
     background:var(--card); border:1px solid var(--card-border); border-left:4px solid var(--green);
@@ -329,6 +330,7 @@
   .skills-tabs .skill-tab:nth-child(3){ transition-delay:.15s; }
   .skills-tabs .skill-tab:nth-child(4){ transition-delay:.20s; }
   .skills-tabs .skill-tab:nth-child(5){ transition-delay:.25s; }
+  .skills-tabs .skill-tab:nth-child(6){ transition-delay:.30s; }
   .stats .stat-block:nth-child(1){ transition-delay:.30s; }
   .stats .stat-block:nth-child(2){ transition-delay:.38s; }
   .stats .stat-block:nth-child(3){ transition-delay:.46s; }
@@ -428,7 +430,7 @@
       <div class="edu-cell" tabindex="0">
         <div class="period">2024—2025</div>
         <span class="tag">Militärutbildning</span>
-        <h3>Värnplikt, Trafikgruppchef — T2, Skövde</h3>
+        <h3>Genomgick gruppchefsutbildning och tjänstgjorde som ställföreträdande gruppchef inom Trafik — trafikdirigering, vägrekognosering och samordning — vid T2, Skövde</h3>
       </div>
       <div class="edu-cell" tabindex="0">
         <div class="period">2021—2024</div>
@@ -469,26 +471,22 @@
 
     <div class="skills-tabs" role="tablist" aria-label="Kompetenser">
       <button class="skill-tab active" role="tab" aria-selected="true" type="button"
-        data-color="green" data-desc="Gillar att hitta nya lösningar och prova mig fram — den här CV-sidan är ett exempel på det.">Kreativ</button>
+        data-color="green" data-desc="Gillar att hitta nya lösningar på praktiska problem — den här CV-sidan, som jag designat och kodat själv med hjälp av AI, är ett konkret exempel på det.">Kreativ</button>
       <button class="skill-tab" role="tab" aria-selected="false" type="button"
-        data-color="blue" data-desc="Van vid strikta tider från både jobb och värnplikten — dyker upp i tid, varje gång.">Håller tiden</button>
+        data-color="blue" data-desc="Van vid tydliga rutiner och strikta tider, förstärkt genom rollen som trafikgruppchef under värnplikten där punktlighet var avgörande.">Håller tiden</button>
       <button class="skill-tab" role="tab" aria-selected="false" type="button"
-        data-color="purple" data-desc="Tränar aktivt med bandy och golf, och håller igång med simning och gymnastik vid sidan om.">Bra på idrott</button>
+        data-color="purple" data-desc="Tränar aktivt med bandy och golf, håller igång med simning och gymnastik, och har byggt upp fysisk styrka genom regelbunden gymträning och praktiskt kroppsarbete som fastighetsskötare.">Fysiskt aktiv</button>
       <button class="skill-tab" role="tab" aria-selected="false" type="button"
-        data-color="amber" data-desc="Har byggt upp fysisk styrka genom både gymträning och praktiskt arbete som fastighetsskötare.">Stark</button>
+        data-color="amber" data-desc="Trivs bra i samarbete och kundkontakt, något jag fått använda i roller som badvakt och kyrkvaktmästare med mycket möten med människor.">Social</button>
       <button class="skill-tab" role="tab" aria-selected="false" type="button"
-        data-color="green" data-desc="Trivs bra i grupp och gillar att umgås med både kompisar och kollegor.">Social</button>
+        data-color="green" data-desc="Nyfiken på nya kunskapsområden — som att lära mig koda och använda AI-verktyg på egen hand för att bygga den här sidan.">Lärvillig</button>
+      <button class="skill-tab" role="tab" aria-selected="false" type="button"
+        data-color="blue" data-desc="Lägger vikt vid detaljer och kvalitet, särskilt i praktiskt och tekniskt arbete som fastighetsskötsel och kyrkvaktmästeri.">Noggrann</button>
     </div>
 
     <div class="skill-panel c-green" role="tabpanel">
-      <p id="skillPanelText">Gillar att hitta nya lösningar och prova mig fram — den här CV-sidan är ett exempel på det.</p>
+      <p id="skillPanelText">Gillar att hitta nya lösningar på praktiska problem — den här CV-sidan, som jag designat och kodat själv med hjälp av AI, är ett konkret exempel på det.</p>
     </div>
-
-    <p class="about-text">
-      Jag tränar <strong>bandy och golf</strong> och håller igång med simning och gymnastik vid sidan om,
-      och är intresserad av <strong>konstruktioner och byggnader</strong> — en stor del av varför jag valt
-      att studera samhällsbyggnadsteknik. På fritiden gymmar jag gärna och umgås med kompisar.
-    </p>
 
     <div class="facts">
       <div><b>Språk</b>Svenska, Engelska, Tyska (5 år)</div>
@@ -525,6 +523,8 @@
 
 <script>
   (function(){
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     // theme toggle
     var root = document.documentElement;
     var btn = document.getElementById('themeToggle');
@@ -538,27 +538,49 @@
     }
     btn.addEventListener('click', function(){ setTheme(theme === 'light' ? 'dark' : 'light'); });
 
-    // skill tabs (competencies)
-    var skillTabs = document.querySelectorAll('.skill-tab');
+    // skill tabs (competencies) — auto-cycles until the user clicks one
+    var skillTabs = Array.prototype.slice.call(document.querySelectorAll('.skill-tab'));
     var skillPanel = document.querySelector('.skill-panel');
     var skillPanelText = document.getElementById('skillPanelText');
-    skillTabs.forEach(function(tab){
+    var autoTimer = null;
+    var autoIndex = 0;
+
+    function activateTab(tab){
+      skillTabs.forEach(function(t){ t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected','true');
+      skillPanel.className = 'skill-panel c-' + tab.dataset.color;
+      skillPanelText.classList.add('fade');
+      setTimeout(function(){
+        skillPanelText.textContent = tab.dataset.desc;
+        skillPanelText.classList.remove('fade');
+      }, 150);
+    }
+
+    function stopAuto(){
+      if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
+    }
+
+    function startAuto(){
+      if (reduceMotion || skillTabs.length < 2) return;
+      autoTimer = setInterval(function(){
+        autoIndex = (autoIndex + 1) % skillTabs.length;
+        activateTab(skillTabs[autoIndex]);
+      }, 3200);
+    }
+
+    skillTabs.forEach(function(tab, idx){
       tab.addEventListener('click', function(){
-        skillTabs.forEach(function(t){ t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
-        tab.classList.add('active');
-        tab.setAttribute('aria-selected','true');
-        skillPanel.className = 'skill-panel c-' + tab.dataset.color;
-        skillPanelText.classList.add('fade');
-        setTimeout(function(){
-          skillPanelText.textContent = tab.dataset.desc;
-          skillPanelText.classList.remove('fade');
-        }, 150);
+        stopAuto();
+        autoIndex = idx;
+        activateTab(tab);
       });
     });
 
+    startAuto();
+
     // scroll reveal + count-up
     var sections = document.querySelectorAll('.reveal-section');
-    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     function animateCount(el){
       var raw = el.dataset.target;
