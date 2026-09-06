@@ -206,28 +206,68 @@
   .proj-grid{ display:grid; grid-template-columns: repeat(2, 1fr); gap:16px; }
   .proj-card{
     background:var(--card); border:1px solid var(--card-border); padding:20px; position:relative;
-    display:flex; flex-direction:column; gap:10px; transition: transform .2s ease, border-color .2s ease;
+    display:flex; flex-direction:column; gap:0; transition: transform .2s ease, border-color .2s ease;
+    cursor:pointer;
   }
   .proj-card::before{ content:''; position:absolute; top:0; left:0; width:100%; height:4px; background:var(--purple); }
-  .proj-card:hover{ transform:translateY(-3px); border-color:var(--purple); }
+  .proj-card:hover, .proj-card:focus-within, .proj-card:focus-visible{ transform:translateY(-3px); border-color:var(--purple); outline:none; }
   .proj-card h3{ font-family:'Space Grotesk', sans-serif; font-size:1rem; font-weight:600; margin-top:4px; }
-  .proj-card p{ font-size:0.88rem; color:var(--ink-soft); line-height:1.6; }
-  .proj-tech{ display:flex; flex-wrap:wrap; gap:6px; margin-top:2px; }
+  .proj-tech{ display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
   .proj-tech span{
     font-family:'JetBrains Mono', monospace; font-size:0.66rem; color:var(--purple);
     border:1px solid var(--purple); padding:2px 8px; border-radius:20px;
   }
-  .proj-links{ margin-top:auto; display:flex; gap:14px; padding-top:6px; }
+  .proj-card p{
+    font-size:0.88rem; color:var(--ink-soft); line-height:1.6;
+    max-height:0; opacity:0; overflow:hidden; margin-top:0;
+    transition: max-height .35s ease, opacity .3s ease .05s, margin-top .35s ease;
+  }
+  .proj-links{
+    display:flex; gap:14px;
+    max-height:0; opacity:0; overflow:hidden; padding-top:0;
+    transition: max-height .35s ease, opacity .3s ease .05s, padding-top .35s ease;
+  }
+  .proj-card:hover p, .proj-card:focus-within p, .proj-card:focus-visible p{ max-height:120px; opacity:1; margin-top:10px; }
+  .proj-card:hover .proj-links, .proj-card:focus-within .proj-links, .proj-card:focus-visible .proj-links{ max-height:40px; opacity:1; padding-top:12px; margin-top:auto; }
   .proj-links a{ font-family:'JetBrains Mono', monospace; font-size:0.75rem; color:var(--ink); text-decoration:none; border-bottom:1px solid var(--ink); }
   .proj-links a:hover{ color:var(--purple); border-color:var(--purple); }
-  .proj-card.placeholder{ border-style:dashed; align-items:center; justify-content:center; text-align:center; color:var(--ink-soft); }
+  .proj-card.placeholder{ border-style:dashed; align-items:center; justify-content:center; text-align:center; color:var(--ink-soft); cursor:default; }
   .proj-card.placeholder::before{ background:var(--card-border); }
-  .proj-card.placeholder p{ font-family:'JetBrains Mono', monospace; font-size:0.78rem; }
+  .proj-card.placeholder p{ font-family:'JetBrains Mono', monospace; font-size:0.78rem; max-height:none; opacity:1; margin-top:0; }
+  @media (max-width:640px){
+    .proj-card p, .proj-links{ max-height:none; opacity:1; margin-top:10px; padding-top:12px; }
+  }
   @media (max-width:640px){ .proj-grid{ grid-template-columns:1fr; } }
 
-  /* --- competencies (amber) --- */
-  .tags{ display:flex; flex-wrap:wrap; gap:10px; margin-bottom:22px; }
-  .tag-chip{ font-family:'JetBrains Mono', monospace; font-size:0.8rem; padding:6px 12px; border:1px solid var(--border); border-radius:2px; color:var(--ink); }
+  /* --- competencies: colored clickable tabs + shared panel --- */
+  .skills-tabs{ display:flex; flex-wrap:wrap; gap:10px; margin-bottom:14px; }
+  .skill-tab{
+    font-family:'JetBrains Mono', monospace; font-size:0.8rem; padding:6px 14px;
+    border:1.5px solid var(--c); border-radius:20px; color:var(--c); background:transparent;
+    cursor:pointer; transition: background .25s ease, color .25s ease, transform .15s ease;
+  }
+  .skill-tab:hover{ transform:translateY(-1px); }
+  .skill-tab.active{ background:var(--c); color:var(--paper); }
+  .skill-tab:nth-child(1){ --c: var(--green); }
+  .skill-tab:nth-child(2){ --c: var(--blue); }
+  .skill-tab:nth-child(3){ --c: var(--purple); }
+  .skill-tab:nth-child(4){ --c: var(--amber); }
+  .skill-tab:nth-child(5){ --c: var(--green); }
+
+  .skill-panel{
+    background:var(--card); border:1px solid var(--card-border); border-left:4px solid var(--green);
+    padding:16px 18px; margin-bottom:24px; transition: border-color .25s ease;
+  }
+  .skill-panel.c-green{ border-left-color:var(--green); }
+  .skill-panel.c-blue{ border-left-color:var(--blue); }
+  .skill-panel.c-purple{ border-left-color:var(--purple); }
+  .skill-panel.c-amber{ border-left-color:var(--amber); }
+  .skill-panel p{
+    font-size:0.9rem; color:var(--ink-soft); line-height:1.6;
+    opacity:1; transition: opacity .2s ease;
+  }
+  .skill-panel p.fade{ opacity:0; }
+
   .about-text{ font-size:0.98rem; color:var(--ink-soft); max-width:66ch; line-height:1.7; }
   .about-text strong{ color:var(--ink); font-weight:600; }
 
@@ -263,12 +303,12 @@
   .section-head .rule{ transform-origin:left; transform:scaleX(0); transition: transform .9s cubic-bezier(.16,.8,.3,1) .15s; }
   .reveal-section.is-visible .section-head .rule{ transform:scaleX(1); }
 
-  .timeline .t-item, .edu-grid .edu-cell, .tags .tag-chip, .proj-grid .proj-card, .stats .stat-block{
+  .timeline .t-item, .edu-grid .edu-cell, .skills-tabs .skill-tab, .proj-grid .proj-card, .stats .stat-block{
     opacity:0; transform:translateY(14px); transition: opacity .55s ease, transform .55s ease;
   }
   .reveal-section.is-visible .timeline .t-item,
   .reveal-section.is-visible .edu-grid .edu-cell,
-  .reveal-section.is-visible .tags .tag-chip,
+  .reveal-section.is-visible .skills-tabs .skill-tab,
   .reveal-section.is-visible .proj-grid .proj-card,
   .reveal-section.is-visible .stats .stat-block{
     opacity:1; transform:none;
@@ -284,11 +324,11 @@
   .edu-grid .edu-cell:nth-child(3){ transition-delay:.28s; }
   .proj-grid .proj-card:nth-child(1){ transition-delay:.06s; }
   .proj-grid .proj-card:nth-child(2){ transition-delay:.16s; }
-  .tags .tag-chip:nth-child(1){ transition-delay:.05s; }
-  .tags .tag-chip:nth-child(2){ transition-delay:.10s; }
-  .tags .tag-chip:nth-child(3){ transition-delay:.15s; }
-  .tags .tag-chip:nth-child(4){ transition-delay:.20s; }
-  .tags .tag-chip:nth-child(5){ transition-delay:.25s; }
+  .skills-tabs .skill-tab:nth-child(1){ transition-delay:.05s; }
+  .skills-tabs .skill-tab:nth-child(2){ transition-delay:.10s; }
+  .skills-tabs .skill-tab:nth-child(3){ transition-delay:.15s; }
+  .skills-tabs .skill-tab:nth-child(4){ transition-delay:.20s; }
+  .skills-tabs .skill-tab:nth-child(5){ transition-delay:.25s; }
   .stats .stat-block:nth-child(1){ transition-delay:.30s; }
   .stats .stat-block:nth-child(2){ transition-delay:.38s; }
   .stats .stat-block:nth-child(3){ transition-delay:.46s; }
@@ -296,7 +336,7 @@
   @media (prefers-reduced-motion: reduce){
     header.title-strip{ animation:none; opacity:1; }
     html{ scroll-behavior:auto; }
-    .reveal-section, .section-head .rule, .timeline .t-item, .edu-grid .edu-cell, .tags .tag-chip, .proj-grid .proj-card, .stats .stat-block{
+    .reveal-section, .section-head .rule, .timeline .t-item, .edu-grid .edu-cell, .skills-tabs .skill-tab, .proj-grid .proj-card, .stats .stat-block{
       opacity:1 !important; transform:none !important; transition:none !important;
     }
   }
@@ -336,7 +376,7 @@
   <section class="reveal-section" aria-labelledby="exp-h">
     <div class="section-head">
       <span class="num">01</span>
-      <h2 id="exp-h">Arbetslivserfarenhet</h2>
+      <h2 id="exp-h">Arbetslivserfarenheter</h2>
       <span class="rule"></span>
     </div>
     <div class="timeline">
@@ -405,10 +445,10 @@
       <span class="rule"></span>
     </div>
     <div class="proj-grid">
-      <div class="proj-card">
+      <div class="proj-card" tabindex="0">
         <h3>Denna CV-hemsida</h3>
-        <p>Personligt CV byggt från grunden som ett sätt att lära mig koda med hjälp av AI — design, struktur och interaktioner är alla utvecklade i samarbete med Claude.</p>
         <div class="proj-tech"><span>HTML/CSS/JS</span><span>AI-assisterad</span><span>GitHub Pages</span></div>
+        <p>Personligt CV byggt från grunden som ett sätt att lära mig koda med hjälp av AI — design, struktur och interaktioner är alla utvecklade i samarbete med Claude.</p>
         <div class="proj-links">
           <a href="https://axel-tor.github.io/Mitt_Cv/" target="_blank" rel="noopener">Live-sida →</a>
           <a href="https://github.com/Axel-Tor/Mitt_Cv" target="_blank" rel="noopener">Källkod →</a>
@@ -427,12 +467,21 @@
       <span class="rule"></span>
     </div>
 
-    <div class="tags">
-      <span class="tag-chip">Kreativ</span>
-      <span class="tag-chip">Håller tiden</span>
-      <span class="tag-chip">Bra på idrott</span>
-      <span class="tag-chip">Stark</span>
-      <span class="tag-chip">Social</span>
+    <div class="skills-tabs" role="tablist" aria-label="Kompetenser">
+      <button class="skill-tab active" role="tab" aria-selected="true" type="button"
+        data-color="green" data-desc="Gillar att hitta nya lösningar och prova mig fram — den här CV-sidan är ett exempel på det.">Kreativ</button>
+      <button class="skill-tab" role="tab" aria-selected="false" type="button"
+        data-color="blue" data-desc="Van vid strikta tider från både jobb och värnplikten — dyker upp i tid, varje gång.">Håller tiden</button>
+      <button class="skill-tab" role="tab" aria-selected="false" type="button"
+        data-color="purple" data-desc="Tränar aktivt med bandy och golf, och håller igång med simning och gymnastik vid sidan om.">Bra på idrott</button>
+      <button class="skill-tab" role="tab" aria-selected="false" type="button"
+        data-color="amber" data-desc="Har byggt upp fysisk styrka genom både gymträning och praktiskt arbete som fastighetsskötare.">Stark</button>
+      <button class="skill-tab" role="tab" aria-selected="false" type="button"
+        data-color="green" data-desc="Trivs bra i grupp och gillar att umgås med både kompisar och kollegor.">Social</button>
+    </div>
+
+    <div class="skill-panel c-green" role="tabpanel">
+      <p id="skillPanelText">Gillar att hitta nya lösningar och prova mig fram — den här CV-sidan är ett exempel på det.</p>
     </div>
 
     <p class="about-text">
@@ -489,6 +538,24 @@
     }
     btn.addEventListener('click', function(){ setTheme(theme === 'light' ? 'dark' : 'light'); });
 
+    // skill tabs (competencies)
+    var skillTabs = document.querySelectorAll('.skill-tab');
+    var skillPanel = document.querySelector('.skill-panel');
+    var skillPanelText = document.getElementById('skillPanelText');
+    skillTabs.forEach(function(tab){
+      tab.addEventListener('click', function(){
+        skillTabs.forEach(function(t){ t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
+        tab.classList.add('active');
+        tab.setAttribute('aria-selected','true');
+        skillPanel.className = 'skill-panel c-' + tab.dataset.color;
+        skillPanelText.classList.add('fade');
+        setTimeout(function(){
+          skillPanelText.textContent = tab.dataset.desc;
+          skillPanelText.classList.remove('fade');
+        }, 150);
+      });
+    });
+
     // scroll reveal + count-up
     var sections = document.querySelectorAll('.reveal-section');
     var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -498,7 +565,7 @@
       var target = parseFloat(raw);
       var decimals = (raw.split('.')[1] || '').length;
       var start = null;
-      var duration = 1100;
+      var duration = 2400;
       function step(ts){
         if (!start) start = ts;
         var progress = Math.min((ts - start) / duration, 1);
